@@ -1,0 +1,1 @@
+export { ProcessEncryptedData } from './CryptoService/Service/index';

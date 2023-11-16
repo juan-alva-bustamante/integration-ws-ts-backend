@@ -1,4 +1,5 @@
 import mongoose, {Connection} from "mongoose";
+import { ProcessEncryptedData } from "../../utils";
 
 export class AwsDocumentDB {
 
@@ -14,9 +15,17 @@ export class AwsDocumentDB {
         }
     }
 
+    private static getUrlConnection() {
+        const processEncryptedData = new ProcessEncryptedData();
+        const user = processEncryptedData.decryptData("hEL4bBFTssNN71TOEaZ6yw==");
+        const password = processEncryptedData.decryptData("tL4GYwXvSSTtMbFvZmnSvJhBVL1uiaCb7isvp+fX9tg=");
+        const localConnection = `mongodb://localhost:27017/deployment`;
+        // return localConnection;
+        return `mongodb+srv://${user}:${password}$@deployment-request.t8uji3o.mongodb.net/deployment-request`;
+    }
+
     private async localConnection() {
-        // const url = "mongodb+srv://juanalva:pgEOTfuJWtwt3WIC$@deployment-request.t8uji3o.mongodb.net/deployment-request";
-        const url = "mongodb://localhost:27017/deployment"
+        const url = AwsDocumentDB.getUrlConnection();
         const connected = await mongoose.connect(url, {
             useNewUrlParser: true,
             useFindAndModify: true,
