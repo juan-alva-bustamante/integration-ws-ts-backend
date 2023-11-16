@@ -17,12 +17,14 @@ export class AwsDocumentDB {
 
     private static getUrlConnection() {
         const processEncryptedData = new ProcessEncryptedData();
-        const user = processEncryptedData.decryptData("U2FsdGVkX18nE1Wzpm9WwjyWQhgRfaG8AG42Vuo4dd0=");
-        const password = processEncryptedData.decryptData("U2FsdGVkX1/JXNnWipDZSp5bqqLkBm9WWP5dVzr1Y+3NRzkdhl1qeCX39UWFDVL4");
-        const localConnection = `mongodb://localhost:27017/deployment`;
-        console.log("Usuario desencriptado base de datos ", user);
+        // const userName = processEncryptedData.decryptData("U2FsdGVkX18nE1Wzpm9WwjyWQhgRfaG8AG42Vuo4dd0=");
+        // const password = processEncryptedData.decryptData("U2FsdGVkX1/JXNnWipDZSp5bqqLkBm9WWP5dVzr1Y+3NRzkdhl1qeCX39UWFDVL4");
+        // const localConnection = `mongodb://localhost:27017/deployment`;
+        const userName = process.env.DB_USERNAME;
+        const password = process.env.DB_PASSWORD;
+        console.log("Usuario desencriptado base de datos ", userName);
         // return localConnection;
-        return `mongodb+srv://${user}:${password}$@deployment-request.t8uji3o.mongodb.net/deployment-request`;
+        return `mongodb+srv://${userName}:${password}$@deployment-request.t8uji3o.mongodb.net/deployment-request`;
     }
 
     private static async localConnection() {
