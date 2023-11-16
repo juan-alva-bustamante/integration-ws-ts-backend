@@ -1,6 +1,7 @@
 import {Request, Response, Router} from "express";
 import {CommonResponse} from "./CoomonResponse";
 import {BranchDao} from "../dao/Branch/BranchDao";
+import { AwsDocumentDB } from "../persitence/utils/AwsDocumentDB";
 
 export class BranchController {
 
@@ -14,6 +15,7 @@ export class BranchController {
 
     public async getAllBranches(request: Request, response: Response) {
         try {
+            await AwsDocumentDB.connectDatabase();
             const allRequest = await new BranchDao().getAllBranches();
             return CommonResponse.commonResponse(response, {
                 code: 200,
@@ -28,6 +30,8 @@ export class BranchController {
                 message: err.toString(),
                 data: null
             });
+        } finally {
+            AwsDocumentDB.closeConnection();
         }
     }
 }

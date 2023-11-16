@@ -5,10 +5,10 @@ export class AwsDocumentDB {
 
     private static database: Connection = null as any;
 
-    public async connectDatabase() {
+    public static async connectDatabase() {
         if (!AwsDocumentDB.database) {
             console.log('connectDatabase new mongo instance...');
-            return await this.localConnection();
+            return await AwsDocumentDB.localConnection();
         } else {
             console.log('connectDatabase reuse mongo instance.');
             return AwsDocumentDB.database;
@@ -24,7 +24,7 @@ export class AwsDocumentDB {
         return `mongodb+srv://${user}:${password}$@deployment-request.t8uji3o.mongodb.net/deployment-request`;
     }
 
-    private async localConnection() {
+    private static async localConnection() {
         const url = AwsDocumentDB.getUrlConnection();
         const connected = await mongoose.connect(url, {
             useNewUrlParser: true,
@@ -36,12 +36,13 @@ export class AwsDocumentDB {
         return AwsDocumentDB.database = connected.connection;
     }
 
-    public closeConnection() {
+    public static closeConnection() {
         console.log("Closing mongo connection ...")
         if (!AwsDocumentDB.database) {
             return;
         }
         mongoose.disconnect();
+        return true;
     }
 
     public validateConnection() {

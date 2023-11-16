@@ -2,6 +2,7 @@ import {Request, Response, Router} from "express";
 import {CommonResponse} from "./CoomonResponse";
 import {IBranchCommitRequest} from "../interfaces/Request/IBranchCommitRequest";
 import {BranchesCommitsDao} from "../dao/BranchCommits/BranchesCommitsDao";
+import { AwsDocumentDB } from "../persitence/utils/AwsDocumentDB";
 
 export class CommitsController {
 
@@ -17,6 +18,7 @@ export class CommitsController {
 
     public async createRequest(request: Request, response: Response) {
         try {
+            await AwsDocumentDB.connectDatabase();
             const body: IBranchCommitRequest = request.body as any;
             const requestStatus = await new BranchesCommitsDao().createRequest(body);
 
@@ -33,11 +35,14 @@ export class CommitsController {
                 message: err.toString(),
                 data: null
             });
+        } finally {
+            AwsDocumentDB.closeConnection();
         }
     }
 
     public async getAllRequest(request: Request, response: Response) {
         try {
+            await AwsDocumentDB.connectDatabase();
             const allRequest = await new BranchesCommitsDao().getBranchCommitByFilter({});
             return CommonResponse.commonResponse(response, {
                 code: 200,
@@ -52,11 +57,14 @@ export class CommitsController {
                 message: err.toString(),
                 data: null
             });
+        } finally {
+            AwsDocumentDB.closeConnection();
         }
     }
 
     public async getBranchRequestsByFilter(request: Request, response: Response) {
         try {
+            await AwsDocumentDB.connectDatabase();
             const params = request.query as any;
             console.log("✔ getRequestByUserId params ", params);
             let filter: any = {};
@@ -80,6 +88,8 @@ export class CommitsController {
                 message: err.toString(),
                 data: null
             });
+        } finally {
+            AwsDocumentDB.closeConnection();
         }
     }
 }

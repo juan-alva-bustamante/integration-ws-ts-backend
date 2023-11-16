@@ -40,7 +40,6 @@ class App {
     }
 
     private async initializeRoutes() {
-        await this.DB.connectDatabase();
         const router = express.Router();
         router.use("/gitlog", this.githubController.router);
         router.use("/user", this.userController.router);

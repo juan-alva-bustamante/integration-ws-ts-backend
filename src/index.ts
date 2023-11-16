@@ -4,5 +4,5 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 app.listen(3000, () => {
-    console.log("http://localhost:8002");
+    console.log("App corriendo en puerto 3000");
 });

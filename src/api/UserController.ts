@@ -2,6 +2,7 @@ import {Request, Response, Router} from "express";
 import {CommonResponse} from "./CoomonResponse";
 import {ILoginUser, IUserRequest} from "../interfaces/Request/IUserRequest";
 import {UserService} from "../service/UserService";
+import { AwsDocumentDB } from "../persitence/utils/AwsDocumentDB";
 
 export class UserController {
 
@@ -16,6 +17,7 @@ export class UserController {
 
     public async createUser(request: Request, response: Response) {
         try {
+            await AwsDocumentDB.connectDatabase();
             const body: IUserRequest = request.body as any;
             console.log("✔ createUser body ", body);
 
@@ -43,11 +45,14 @@ export class UserController {
                 message: err.toString(),
                 data: null
             });
+        } finally {
+            AwsDocumentDB.closeConnection();
         }
     }
 
     public async loginUser(request: Request, response: Response) {
         try {
+            await AwsDocumentDB.connectDatabase();
             const body: ILoginUser = request.body as any;
             console.log("✔ loginUser body ", body);
 
@@ -83,6 +88,8 @@ export class UserController {
                 message: err.toString(),
                 data: null
             });
+        }  finally {
+            AwsDocumentDB.closeConnection();
         }
     }
 
