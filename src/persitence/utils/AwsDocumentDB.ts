@@ -46,6 +46,7 @@ export class AwsDocumentDB {
 
     public static closeConnection() {
         console.log("Closing mongo connection ...")
+        AwsDocumentDB.database = null as any;
         if (!AwsDocumentDB.database) {
             return;
         }
