@@ -4,18 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "ts": "tsc -w",
+    "tscw": "tsc -w",
     "dev": "nodemon ./src/index.ts",
     "copy": "cp -r node_modules ./dist && cp ./*.json ./dist && cp ./lambda.js ./dist",
-    "build": "npm install && tsc && npm run copy",
-    "build-dev": "npm install && tsc",
-    "start": "nodemon ./dist/index.js"
+    "build:aws": "npm install && tsc && npm run copy",
+    "build": "npm install && tsc",
+    "start": "node ./dist/index.js",
+    "clean:windows": "rmdir /s node_modules && rmdir /s dist"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/cors": "^2.8.6",
-    "@types/crypto-js": "^4.2.1",
+    "@types/crypto-js": "4.1.1",
     "@types/express": "^4.17.1",
     "@types/git-branch": "^2.0.2",
     "@types/helmet": "0.0.47",
@@ -33,7 +34,7 @@
     "axios": "^0.21.1",
     "child_process": "^1.0.2",
     "cors": "^2.8.5",
-    "crypto-js": "^4.2.0",
+    "crypto-js": "4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "full-git-history": "^1.2.4",

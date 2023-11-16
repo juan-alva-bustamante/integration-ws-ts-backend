@@ -5,10 +5,6 @@ export class CryptoService {
 
   // The secret token value to use for encrypt
   private readonly secretkey: string = "";
-  // The key value encrypted
-  private readonly key: any;
-  // The key value encrypted
-  private readonly iv: any;
 
   private static getKeyByEnv(env: ENV): string {
     try {
@@ -24,8 +20,6 @@ export class CryptoService {
       return this;
     }
     this.secretkey = CryptoService.getKeyByEnv(key);
-    this.key = enc.Utf8.parse(this.secretkey);
-    this.iv = enc.Utf8.parse(this.secretkey.substring(0, 16));
     return this;
   }
 
@@ -36,12 +30,7 @@ export class CryptoService {
   public encrypt(plainText: string): string {
     const encrypted = AES.encrypt(
       plainText,
-      this.key,
-      {
-        iv: this.iv,
-        mode: mode.CBC,
-        padding: pad.Pkcs7
-      }
+      this.secretkey
     );
     return encrypted.toString();
   }
@@ -53,12 +42,7 @@ export class CryptoService {
   public decrypt(encryptedText: string): string {
     const decrypt = AES.decrypt(
       encryptedText,
-      this.key,
-      {
-        iv: this.iv,
-        mode: mode.CBC,
-        padding: pad.Pkcs7
-      }
+      this.secretkey
     );
     return decrypt.toString(enc.Utf8);
   }
